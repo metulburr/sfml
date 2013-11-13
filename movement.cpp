@@ -43,7 +43,8 @@ class Control{
     public:
         sf::RenderWindow window;
         sf::Clock clock;
-        sf::Time time;
+        sf::Time frame_time = sf::seconds(1.f/60.f);
+        sf::Time time = sf::Time::Zero, update_time = sf::Time::Zero;
         Rect obj;
         
         Control(){
@@ -51,12 +52,21 @@ class Control{
             //window.setKeyRepeatEnabled(false);
         }
         
-        void update(sf::Event event){
-            obj.update(time);
+        void update(){
+            time = clock.restart();
+            update_time += time;
+
+            while(update_time > frame_time){
+                update_time -= frame_time;
+                obj.update(frame_time);
+            }
+            render();
+        }
+        
+        void render(){
             window.clear(sf::Color::Black);
             window.draw(obj.rect);
             window.display();
-            time = clock.restart();
         }
         
         void input_handler(sf::Keyboard::Key key, bool is_pressed){
@@ -85,7 +95,7 @@ class Control{
             while (window.isOpen()){
                 sf::Event event;
                 event_handler(event);
-                update(event);
+                update();
             }
         }
 };
