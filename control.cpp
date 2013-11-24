@@ -8,11 +8,24 @@ class Control{
         sf::RenderWindow window;
         int screen[2] = {800,600};
         unsigned int monitor[2] = {sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height};
-        std::string title;
+        bool fullscreen;
+        std::string title = "SFML test";
         
-        Control(std::string t):title(t){
-            window.create(sf::VideoMode(screen[0], screen[1]), title);
-            center_window();
+        Control(bool fullscr):fullscreen(fullscr){
+            if (fullscreen)
+                window.create(sf::VideoMode(screen[0], screen[1]), title, sf::Style::Fullscreen);
+            else{
+                window.create(sf::VideoMode(screen[0], screen[1]), title);
+                center_window();
+            }
+            output();
+        }
+
+        
+        void output(){
+            std::cout << "Monitor size: " << monitor[0] << ", " << monitor[1] << std::endl;
+            std::cout << "Screen size: " << screen[0] << ", " << screen[1] << std::endl;
+            std::cout << "Fullscreen: " << fullscreen << std::endl;
         }
         
         void center_window(){
@@ -28,6 +41,11 @@ class Control{
             while(window.pollEvent(e)){
                 if (e.type == sf::Event::Closed){
                     window.close();
+                }
+                else if (e.type == sf::Event::KeyPressed){
+                    if (e.key.code == sf::Keyboard::Escape){
+                        window.close();
+                    }
                 }
             }
         }
@@ -48,16 +66,11 @@ class Control{
                 update();
                 render();
             }
-            test();
-        }
-        
-        void test(){
-            std::cout << monitor[0] << std::endl;
-            std::cout << monitor[1] << std::endl;
         }
 };
 
 int main(){
-    Control app("SFML Win");
+    bool fullscreen = false;
+    Control app(fullscreen);
     app.run();
 }
