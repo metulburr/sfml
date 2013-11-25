@@ -6,14 +6,14 @@
 class Control{
     public:
         sf::RenderWindow window;
-        int screen[2] = {800,600};
-        unsigned int monitor[2] = {sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height};
+        unsigned int monitor[2] = {sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height},
+            screen[2] = {800,600};
         bool fullscreen;
         std::string title = "SFML test";
         
         Control(bool fullscr):fullscreen(fullscr){
             if (fullscreen)
-                window.create(sf::VideoMode(screen[0], screen[1]), title, sf::Style::Fullscreen);
+                window.create(sf::VideoMode(monitor[0], monitor[1]), title, sf::Style::Fullscreen);
             else{
                 window.create(sf::VideoMode(screen[0], screen[1]), title);
                 center_window();
