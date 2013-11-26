@@ -1,4 +1,3 @@
-
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -10,15 +9,18 @@ class Control{
             screen[2] = {800,600};
         bool fullscreen;
         std::string title = "SFML test";
+        sf::Time time, game_time;
+        sf::Clock clock, game_clock;
+        sf::Vector2i mouse;
         
-        Control(bool fullscr):fullscreen(fullscr){
+        Control(bool scr):fullscreen(scr){
+            time = sf::seconds(0);
             if (fullscreen)
                 window.create(sf::VideoMode(monitor[0], monitor[1]), title, sf::Style::Fullscreen);
             else{
                 window.create(sf::VideoMode(screen[0], screen[1]), title);
                 center_window();
             }
-            output();
         }
 
         
@@ -26,6 +28,10 @@ class Control{
             std::cout << "Monitor size: " << monitor[0] << ", " << monitor[1] << std::endl;
             std::cout << "Screen size: " << screen[0] << ", " << screen[1] << std::endl;
             std::cout << "Fullscreen: " << fullscreen << std::endl;
+            std::cout << "Frame Time: " << time.asSeconds() << std::endl;
+            std::cout << "Game Time: " << game_time.asSeconds() << std::endl;
+            std::cout << "Mouse Position: " << mouse.x << " " << mouse.y << std::endl;
+            std::cout << std::endl;
         }
         
         void center_window(){
@@ -50,8 +56,15 @@ class Control{
             }
         }
         
+        void time_update(){
+            time = clock.restart();
+            game_time = game_clock.getElapsedTime();
+        }
+        
         void update(){
-            
+            output();
+            time_update();
+            mouse = sf::Mouse::getPosition(window); 
         }
         
         void render(){
