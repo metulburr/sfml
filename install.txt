@@ -1,0 +1,5 @@
+sudo apt-get install libsfml-dev
+
+metulburr@ubuntu ~/Downloads/SFML-2.1  $ sudo cp -r include/SFML /usr/include
+metulburr@ubuntu ~/Downloads/SFML-2.1 $ sudo cp -r /lib/* /usr/lib
+metulburr@ubuntu ~/Downloads/SFML-2.1  $ sudo cp -r share/SFML /usr/share
